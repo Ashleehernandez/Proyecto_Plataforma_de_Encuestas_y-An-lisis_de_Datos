@@ -1,9 +1,7 @@
-
 using Microsoft.EntityFrameworkCore;
 using CapInfraestructura.Context;
 using CAPdominioProyectofinal.InterfaceServicio;
 using CapAplicacion.Servicio;
-using CAPdominioProyectofinal.InterfaceRepository;
 using CapInfraestructura.Repository;
 using CapDominio.InterfaceFactory;
 using CapAplicacion.Factory;
@@ -11,6 +9,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Net.Http.Headers;
+using CapDominio.InterfaceRepository;
+using CapDominio.InterfaceServicio;
+using CapDominio.Entity;
+using CapInfraestructura.Repository.CapInfraestructura.Repository;
 
 namespace Cap_Presentacion
 {
@@ -65,20 +67,23 @@ namespace Cap_Presentacion
 
             // Inyectar dependencias Servicio 
             builder.Services.AddScoped<IUsuarioServicio, ServicioUsuario>();
-            builder.Services.AddScoped<IEncuestaServicio, ServicioEncuesta>();
+            builder.Services.AddScoped<ITestService, TestService>();
             builder.Services.AddScoped<IPreguntasServicio, ServicioPreguntas>();
+            builder.Services.AddTransient<ITestService , TestService>();
+
 
             // Inyectar dependencias Repositorio
-            builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            builder.Services.AddScoped<ICuentaRepository, EncuestaRepository>();
-            builder.Services.AddScoped<IPreguntasRepository, PreguntasRepository>();
-            builder.Services.AddScoped<IRespuestaRepository, RespuestaRepository>();
+            builder.Services.AddScoped<IUsuarioRepositoryGenery, UsuarioRepositoryGenery>();
+            builder.Services.AddScoped<ITestRepository, TestRepository>();
+            builder.Services.AddScoped<IPreguntaRepositoryGenery, PreguntaRepositoryGenery>();
+            builder.Services.AddScoped<IRespuestaRepositoryGenery, Respuestarepositorygenery>();
 
             // Inyectar dependencias Factory 
             builder.Services.AddScoped<InterfaceGenery, ServicioFactory>();
 
+            
             // Inyectar dependencias Adapter
-            builder.Services.AddScoped<ServicioRespuestaAdapters>();
+            builder.Services.AddScoped< ServicioRespuestaAdapters>();
 
             // Inyeccion de dependencias strategy 
             builder.Services.AddScoped<InterfaceGenery, ServicioFactory>();

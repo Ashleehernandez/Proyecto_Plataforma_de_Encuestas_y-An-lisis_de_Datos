@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CapDominio.Entity
+﻿namespace CapDominio.Entity
 {
     public class PreguntaDto
     {
@@ -12,7 +6,7 @@ namespace CapDominio.Entity
         public TipoPregunta TipoPregunta { get; set; }
         public int EncuestaId { get; set; }
         public int UsuarioId { get; set; }
-        public List<string> Opciones { get; set; } // Para opción múltiple (solo el texto)
+        //public List<string> Opciones { get; set; } 
         public int? EscalaMin { get; set; }
         public int? EscalaMax { get; set; }
     }

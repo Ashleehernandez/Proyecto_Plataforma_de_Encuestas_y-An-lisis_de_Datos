@@ -1,23 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CapDominio.Entity;
-using CAPdominioProyectofinal.InterfaceRepository;
+﻿using CapDominio.Entity;
+using CapDominio.InterfaceRepository;
 using CAPdominioProyectofinal.InterfaceServicio;
-using CapInfraestructura.Repository;
-using Org.BouncyCastle.Crypto.Generators;
-
-
-
 namespace CapAplicacion.Servicio
 {
     public class ServicioUsuario : IUsuarioServicio
     {
-        private readonly IUsuarioRepository usuarioRepository;
+        private readonly IUsuarioRepositoryGenery usuarioRepository;
 
-        public ServicioUsuario(IUsuarioRepository usuario)
+        public ServicioUsuario(IUsuarioRepositoryGenery usuario)
         {
             usuarioRepository = usuario;
         }
@@ -28,50 +18,51 @@ namespace CapAplicacion.Servicio
             
         }
 
+        public async Task AddTestAsync(Usuario test)
+        {
+              await usuarioRepository.Add(test);
+        }
+
         public Usuario Autenticar(string correo, string contrasena)
         {
-            var usuario = usuarioRepository.GetAll().FirstOrDefault(u => u.Correo == correo);
-            if (usuario != null && BCrypt.Net.BCrypt.Verify(contrasena, usuario.Contrasena))
+            var usuarios = usuarioRepository.GetAll().Result;
+            var usuario = usuarios.FirstOrDefault(u => u.Correo == correo);
+            var verify = BCrypt.Net.BCrypt.Verify(contrasena, usuario.Contrasena);
+            if (usuario != null && verify)
             {
                 return usuario;
             }
             return null;
         }
 
-        public Usuario CrearUsuario(Usuario usuario)
+        public Task DeleteTestAsync(int id)
         {
-            usuarioRepository.Add(usuario);
-            return usuario;
+            return usuarioRepository.Delete(id);
         }
 
-        public void EliminarUsuario(int id)
+        public Task<IEnumerable<Usuario>> GetAllTestsAsync()
         {
-            usuarioRepository.Delete(id);
-           
+            return usuarioRepository.GetAll();
         }
 
-        
+        public Task<Usuario> GetTestByIdAsync(int id)
+        {
+            return usuarioRepository.GetById(id);
+        }
+
         public IEnumerable<Usuario> ObtecnerPorRol(Rol rol)
         {
-            return usuarioRepository.GetAll().Where(u => u.Rol == rol.ToString());
-        }
-
-      
-        public IEnumerable<Usuario> ObtecnerTodo()
-        {
-           return usuarioRepository.GetAll();
-            
-        }
-
-        public Usuario ObtecnerUserId(int id)
-        {
-           return usuarioRepository.GetById(id);
-            
+            return usuarioRepository.GetAll().Result.Where(u => u.Rol == u.Rol);
         }
 
         public Usuario Obtenerporcorreo(string correo)
         {
-            return usuarioRepository.GetAll().FirstOrDefault(u => u.Correo == correo);
+            return usuarioRepository.GetAll().Result.FirstOrDefault(u => u.Correo == correo);
+        }
+
+        public Task UpdateTestAsync(Usuario test)
+        {
+            return usuarioRepository.Update(test);
         }
     }
 }

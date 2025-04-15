@@ -157,8 +157,8 @@ namespace CapInfraestructura.Migrations
                 table: "Preguntas",
                 column: "EncuestaId",
                 principalTable: "Encuestas",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "Id"
+                );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Respuestas_Usuarios_UsuarioIdUsuario",

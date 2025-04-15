@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using CapDominio.Entity;
-using CAPdominioProyectofinal.InterfaceRepository;
-
+﻿using CapDominio.Entity;
+using CapDominio.InterfaceRepository;
 namespace CapAplicacion.Servicio
 {
     public class ServicioRespuestaAdapters
     {
-        private readonly IRespuestaRepository respuestaRepository;
+        private readonly IRespuestaRepositoryGenery respuestaRepository;
 
-        public ServicioRespuestaAdapters(IRespuestaRepository respuestaRepository)
+        public ServicioRespuestaAdapters(IRespuestaRepositoryGenery respuestaRepository)
         {
             this.respuestaRepository = respuestaRepository;
         }
@@ -35,12 +31,12 @@ namespace CapAplicacion.Servicio
 
         public async Task<IEnumerable<Respuestas>> RespuestasPorEncuestaId(int encuestaId)
         {
-            return await Task.Run(() => respuestaRepository.GetByEncuestaId(encuestaId));
+            return await Task.Run(() => respuestaRepository.GetByEncuestaId(encuestaId).Cast<Respuestas>());
         }
 
         public async Task<IEnumerable<Respuestas>> RespuestaporTipoDePreguntas(int tipoPreguntaId)
         {
-            return await Task.Run(() => respuestaRepository.GetByTipoPregunta(tipoPreguntaId));
+            return await Task.Run(() => respuestaRepository.GetByTipoPregunta(tipoPreguntaId).Cast<Respuestas>());
         }
 
         public async Task<Respuestas> RespuestasPorId(int id)
@@ -50,7 +46,7 @@ namespace CapAplicacion.Servicio
 
         public async Task<IEnumerable<Respuestas>> ObtenerTodo()
         {
-            return await Task.Run(() => respuestaRepository.GetaAll());
+            return await Task.Run(() => respuestaRepository.GetAll());
         }
     }
 }

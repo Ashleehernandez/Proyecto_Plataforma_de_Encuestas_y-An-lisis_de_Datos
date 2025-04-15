@@ -1,60 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CapDominio.Entity;
-using CAPdominioProyectofinal.InterfaceRepository;
+﻿using CapDominio.InterfaceRepository;
 using CAPdominioProyectofinal.InterfaceServicio;
+
 
 
 namespace CapAplicacion.Servicio
 {
     public class ServicioPreguntas : IPreguntasServicio
     {
-        private readonly IPreguntasRepository preguntasRepository;
+        private readonly IPreguntaRepositoryGenery preguntasRepository;
 
-        public ServicioPreguntas(IPreguntasRepository preguntasRepositor)
+        public ServicioPreguntas(IPreguntaRepositoryGenery preguntasRepositor)
         {
             preguntasRepository = preguntasRepositor;
         }
 
-        public void ActualizarPregunta(Preguntas pregunta)
+        public Task AddTestAsync(Preguntas test)
         {
-            preguntasRepository.Update(pregunta);
-
+            return preguntasRepository.Add(test);
         }
 
-        public Preguntas CrearPregunta(Preguntas pregunta)
+        public Task DeleteTestAsync(int id)
         {
-            preguntasRepository.Add(pregunta);
-            return pregunta;
+            return preguntasRepository.Delete(id);
         }
 
-        public void EliminarPregunta(int id)
+        public Task<IEnumerable<Preguntas>> GetAllTestsAsync()
         {
-            preguntasRepository.Delete(id);
+            return preguntasRepository.GetAll();
+        }
+
+        public Task<Preguntas> GetTestByIdAsync(int id)
+        {
+            return preguntasRepository.GetById(id);
         }
 
         public IEnumerable<Preguntas> ObtenerPorEncuestaId(int encuestaId)
         {
-            return new List<Preguntas> { preguntasRepository.GetById(encuestaId) };
+            return (IEnumerable<Preguntas>)preguntasRepository.GetAllByEncuestaId(encuestaId);
         }
 
         public IEnumerable<Preguntas> ObtenerPorTipoPregunta(TipoPregunta tipoPregunta)
         {
-            return preguntasRepository.GetAll().Where(p => p.TipoPregunta == tipoPregunta);
+            return preguntasRepository.GetAllByTipoPregunta(tipoPregunta);
         }
 
-        public Preguntas ObtenerPreguntaId(int id)
+        public Task UpdateTestAsync(Preguntas test)
         {
-          return  preguntasRepository.GetById(id);
-           
-        }
-
-        public IEnumerable<Preguntas> ObtenerTodo()
-        {
-            return preguntasRepository.GetAll();
+           return preguntasRepository.Update(test);
         }
     }
 }

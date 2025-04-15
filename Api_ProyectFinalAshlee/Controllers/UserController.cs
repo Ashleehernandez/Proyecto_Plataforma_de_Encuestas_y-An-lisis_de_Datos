@@ -1,9 +1,5 @@
 ﻿using CAPdominioProyectofinal.InterfaceServicio;
-using CapAplicacion.Servicio;
 using CapDominio.Entity;
-
-using Microsoft.AspNetCore.Http;
-
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api_ProyectFinalAshlee.Controllers
@@ -21,8 +17,13 @@ namespace Api_ProyectFinalAshlee.Controllers
         }
 
         // registrar usuario
+
+
+
+
+
         [HttpPost("registrar")]
-        public IActionResult Registrar([FromBody] Usuario usuario)
+        public async Task<IActionResult> Registrar([FromBody] Usuario usuario)
         {
             if (usuario == null || string.IsNullOrEmpty(usuario.Correo) || string.IsNullOrEmpty(usuario.Contrasena) || string.IsNullOrEmpty(usuario.Nombre) || string.IsNullOrEmpty(usuario.Rol))
             {
@@ -38,36 +39,42 @@ namespace Api_ProyectFinalAshlee.Controllers
             // Encriptar la contraseña antes de guardarla.
             usuario.Contrasena = BCrypt.Net.BCrypt.HashPassword(usuario.Contrasena);
 
-            usuarioServicio.CrearUsuario(usuario);
+             await  usuarioServicio.AddTestAsync(usuario);
             return CreatedAtAction(nameof(ObtenerUsuario), new { id = usuario.IdUsuario }, usuario);
         }
 
+
+
         // obtener usuario por id
         [HttpGet("{id}")]
-        public IActionResult ObtenerUsuario(int id)
+        public async Task<ActionResult<Usuario>> ObtenerUsuario(int id)
         {
-            var usuario = usuarioServicio.ObtecnerUserId(id);
+            var usuario = await usuarioServicio.GetTestByIdAsync(id);
 
             if (usuario == null)
             {
-                return Ok("Usuario no Encontrado ");
+                return NotFound("Usuario no encontrado");
             }
 
             return Ok(usuario);
         }
-        // obtener todos los usuarios
-        [HttpGet("todos")]
 
-        public IActionResult ObtenerTodos()
+
+
+        // Obtener todos los usuarios
+        [HttpGet("todos")]
+        public async Task<ActionResult<List<Usuario>>> ObtenerTodos()
         {
-            var usuarios = usuarioServicio.ObtecnerTodo();
+            var usuarios = await usuarioServicio.GetAllTestsAsync();
             return Ok(usuarios);
         }
+
+
 
         // actualizar usuario
         [HttpPut("{id}")]
 
-        public IActionResult ActualizarUsuario(int id, [FromBody] Usuario usuario)
+        public async Task< IActionResult > ActualizarUsuario(int id, [FromBody] Usuario usuario)
         {
             if (usuario == null || id != usuario.IdUsuario)
             {
@@ -75,7 +82,7 @@ namespace Api_ProyectFinalAshlee.Controllers
             }
 
             
-            var usuarioExistente = usuarioServicio.ObtecnerUserId(id);
+            var usuarioExistente = usuarioServicio.GetTestByIdAsync(id);
             if (usuarioExistente == null)
             {
                 return Ok($"No se encontró un usuario con ID {id}.");
@@ -87,16 +94,17 @@ namespace Api_ProyectFinalAshlee.Controllers
             }
 
             
-            usuarioServicio.ActualizarUsuario(usuario);
+           await usuarioServicio.UpdateTestAsync(usuario);
 
             return Ok(new { mensaje = "Usuario actualizado correctamente", usuario });
 
         }
+
         // eliminar usuario
         [HttpDelete("{id}")]
-        public IActionResult DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            usuarioServicio.EliminarUsuario(id);
+           await usuarioServicio.DeleteTestAsync(id);
             return Ok("Usuario Eliminado");
         }
 

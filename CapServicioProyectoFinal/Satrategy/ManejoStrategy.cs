@@ -1,12 +1,6 @@
 ﻿using CAPdominioProyectofinal.InterfaceServicio;
-using CapDominio.InterfaceStrategy;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CapAplicacion.ServicioStrategy;
+using CapDominio.InterfaceServicio;
 
 namespace CapAplicacion.Satrategy
 {
@@ -30,7 +24,7 @@ namespace CapAplicacion.Satrategy
         {
             return servicioUsuarioStrategy.ObtecnerServicio();
         }
-        public IEncuestaServicio ObtecnerServicioCuenta()
+        public ITestService ObtecnerServicioCuenta()
         {
             return servicioCuentaStrategy.ObtecnerServicio();
         }

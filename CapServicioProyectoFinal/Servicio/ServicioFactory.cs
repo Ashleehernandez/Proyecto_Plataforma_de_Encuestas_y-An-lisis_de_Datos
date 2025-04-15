@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CapDominio.InterfaceFactory;
-
-
+﻿using CapDominio.InterfaceFactory;
 namespace CapAplicacion.Factory
 {
     public class ServicioFactory : InterfaceGenery

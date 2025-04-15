@@ -1,20 +1,13 @@
 ﻿using CapDominio.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace CAPdominioProyectofinal.InterfaceServicio
 {
     public interface IUsuarioServicio
     {
-        Usuario ObtecnerUserId(int id);
-        IEnumerable<Usuario> ObtecnerTodo();
-        Usuario CrearUsuario(Usuario usuario);
-        void ActualizarUsuario(Usuario usuario);
-        void EliminarUsuario(int id);
-
+        Task<IEnumerable<Usuario>> GetAllTestsAsync();
+        Task<Usuario> GetTestByIdAsync(int id);
+        Task AddTestAsync(Usuario test);
+        Task UpdateTestAsync(Usuario test);
+        Task DeleteTestAsync(int id);
 
         Usuario Obtenerporcorreo(string correo);
         Usuario Autenticar(string correo, string contrasena);

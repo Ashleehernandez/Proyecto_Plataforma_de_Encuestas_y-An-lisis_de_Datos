@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-
+﻿using System.Text.Json.Serialization;
 namespace CapDominio.Entity
 {
     public class Respuestas
@@ -22,5 +16,6 @@ namespace CapDominio.Entity
 
         [JsonIgnore]
         public Preguntas Pregunta { get; set; }
+        public int EncuentaId { get; set; }
     }
 }

@@ -25,7 +25,7 @@ namespace Api_ProyectFinalAshlee.Controllers
             try
             {
                 // 1. Validar la existencia de la pregunta
-                var pregunta = _preguntasServicio.ObtenerPreguntaId(respuestaDto.PreguntaId); // Remove await
+                var pregunta = _preguntasServicio.GetTestByIdAsync(respuestaDto.PreguntaId); // Remove await
                 if (pregunta == null)
                 {
                     return NotFound($"No se encontró la pregunta con ID {respuestaDto.PreguntaId}");

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using CapDominio.Entity;
 
 namespace CapInfraestructura.Context
@@ -16,6 +11,7 @@ namespace CapInfraestructura.Context
         public DbSet<Encuesta> Encuenta { get; set; }
         public DbSet<Preguntas> Preguntas { get; set; }
         public DbSet<Respuestas> Respuestas { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,10 +35,10 @@ namespace CapInfraestructura.Context
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Nombre).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.EsPublica).IsRequired();
+                entity.Property(e => e.Descripcion).HasMaxLength(100).IsRequired();
+                entity.Property(e => e.Estado).IsRequired();
+                entity.Property(e => e.FechaExpiracion).IsRequired();
                 entity.Property(e => e.FechaCreacion).IsRequired();
-                entity.HasOne(e => e.Usuario)
-                      .WithMany()
-                      .HasForeignKey(e => e.UsuarioId);
 
                 entity.ToTable("Encuestas");
             });
@@ -52,9 +48,8 @@ namespace CapInfraestructura.Context
             {
                 entity.HasKey(p => p.Id);
                 entity.Property(p => p.Texto).IsRequired().HasMaxLength(250);
-                entity.HasOne(p => p.Encuesta)
-                      .WithMany(e => e.Preguntas)
-                      .HasForeignKey(p => p.EncuestaId);
+                entity.HasOne(p => p.Encuesta);
+                      
             });
 
             // Configuración de Respuestas

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using CapAplicacion.Servicio;
+﻿
 using CapDominio.Entity;
 using Microsoft.AspNetCore.Mvc;
 using CAPdominioProyectofinal.InterfaceServicio;

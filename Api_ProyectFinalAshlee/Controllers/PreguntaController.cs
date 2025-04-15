@@ -42,7 +42,7 @@ namespace Api_ProyectFinalAshlee.Controllers
                 // Configurar según el tipo de pregunta
                 if (pregunta.TipoPregunta == TipoPregunta.OpcionMultiple)
                 {
-                    pregunta.Opciones = preguntaDto.Opciones?.Select(o => new Opcion { Texto = o }).ToList();
+                    //pregunta.Opciones = preguntaDto.Opciones?.Select(o => new Opciones{ Texto = o }).ToList();
                     pregunta.EscalaMin = null;
                     pregunta.EscalaMax = null;
                 }
@@ -50,10 +50,10 @@ namespace Api_ProyectFinalAshlee.Controllers
                 {
                     pregunta.EscalaMin = preguntaDto.EscalaMin ?? 1;
                     pregunta.EscalaMax = preguntaDto.EscalaMax ?? 5;
-                    pregunta.Opciones = null;
+                   // pregunta.Opciones = null;
                 }
 
-                var preguntaCreada = _preguntasServicio.CrearPregunta(pregunta);
+                var preguntaCreada = _preguntasServicio.AddTestAsync(pregunta);
                 return CreatedAtAction(nameof(GetById), new { id = preguntaCreada.Id }, preguntaCreada);
             }
             catch (Exception ex)
@@ -68,7 +68,7 @@ namespace Api_ProyectFinalAshlee.Controllers
         {
             try
             {
-                var pregunta = _preguntasServicio.ObtenerPreguntaId(id);
+                var pregunta = _preguntasServicio.GetTestByIdAsync(id);
                 if (pregunta == null)
                 {
                     return NotFound(new { message = "Pregunta no encontrada" });
@@ -99,7 +99,7 @@ namespace Api_ProyectFinalAshlee.Controllers
         // PUT: api/Pregunta/5
         [HttpPut("{id}")]
         [Authorize(Roles = "Administrador")]
-        public IActionResult Update(int id, [FromBody] PreguntaDto preguntaDto)
+        public async Task< IActionResult> Update(int id, [FromBody] PreguntaDto preguntaDto)
         {
             try
             {
@@ -108,31 +108,13 @@ namespace Api_ProyectFinalAshlee.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var preguntaExistente = _preguntasServicio.ObtenerPreguntaId(id);
+                var preguntaExistente = await  _preguntasServicio.GetTestByIdAsync(id);
                 if (preguntaExistente == null)
                 {
-                    return NotFound(new { message = "Pregunta no encontrada" });
+                    return Ok(new { message = "Pregunta no encontrada" });
                 }
-
-                // Actualizar propiedades básicas
-                preguntaExistente.Texto = preguntaDto.Texto;
-                preguntaExistente.TipoPregunta = preguntaDto.TipoPregunta;
-
-                // Actualizar según tipo de pregunta
-                if (preguntaDto.TipoPregunta == TipoPregunta.OpcionMultiple)
-                {
-                    preguntaExistente.Opciones = preguntaDto.Opciones?.Select(o => new Opcion { Texto = o }).ToList();
-                    preguntaExistente.EscalaMin = null;
-                    preguntaExistente.EscalaMax = null;
-                }
-                else if (preguntaDto.TipoPregunta == TipoPregunta.EscalaCalificacion)
-                {
-                    preguntaExistente.EscalaMin = preguntaDto.EscalaMin ?? 1;
-                    preguntaExistente.EscalaMax = preguntaDto.EscalaMax ?? 5;
-                    preguntaExistente.Opciones = null;
-                }
-
-                _preguntasServicio.ActualizarPregunta(preguntaExistente);
+          
+                _preguntasServicio.UpdateTestAsync(preguntaExistente);
                 return NoContent();
             }
             catch (Exception ex)
@@ -148,19 +130,13 @@ namespace Api_ProyectFinalAshlee.Controllers
         {
             try
             {
-                var pregunta = _preguntasServicio.ObtenerPreguntaId(id);
+                var pregunta = _preguntasServicio.GetTestByIdAsync(id);
                 if (pregunta == null)
                 {
-                    return NotFound(new { message = "Pregunta no encontrada" });
+                    return Ok(new { message = "Pregunta no encontrada" });
                 }
 
-                // Verificar si tiene respuestas antes de eliminar
-                if (pregunta.Respuestas?.Count > 0)
-                {
-                    return BadRequest(new { message = "No se puede eliminar una pregunta con respuestas" });
-                }
-
-                _preguntasServicio.EliminarPregunta(id);
+                _preguntasServicio.DeleteTestAsync(id);
                 return NoContent();
             }
             catch (Exception ex)
@@ -190,7 +166,7 @@ namespace Api_ProyectFinalAshlee.Controllers
         {
             try
             {
-                var preguntas = _preguntasServicio.ObtenerTodo();
+                var preguntas = _preguntasServicio.GetAllTestsAsync();
                 return Ok(preguntas);
             }
             catch (Exception ex)

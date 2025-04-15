@@ -4,11 +4,12 @@ public class Preguntas
 {
     public int Id { get; set; }
     public string Texto { get; set; }
-    public TipoPregunta TipoPregunta { get; set; }
-    public int EncuestaId { get; set; }
-
+    public TipoPregunta TipoPregunta { get; set;  }
+    public int EncuestaId { get; set; } = 5;
+    //public int Min { get; set; } = 1;
+    //public int Max { get; set; } = 100;
     // Para preguntas de opción múltiple
-    public virtual ICollection<Opcion> Opciones { get; set; }
+    //public virtual ICollection<Opciones> Opciones { get; set; }
 
     // Para preguntas de escala
     public int? EscalaMin { get; set; }
@@ -19,18 +20,7 @@ public class Preguntas
     public virtual ICollection<Respuestas> Respuestas { get; set; }
     public int UsuarioId { get; set; }
 }
-
-public class Opcion
-    {
-        public int Id { get; set; }
-        public string Texto { get; set; } // Texto de la opción
-    }
-
-    public class EscalaCalificacion
-    {
-        public int Min { get; set; }
-        public int Max { get; set; }
-    }
+ 
 
     public enum TipoPregunta
     {
