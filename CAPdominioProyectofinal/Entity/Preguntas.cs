@@ -4,8 +4,8 @@ public class Preguntas
 {
     public int Id { get; set; }
     public string? Texto { get; set; }
-    public TipoPregunta TipoPregunta { get; set; }
-    public int EncuestaId { get; set; }
+    public TipoPregunta? TipoPregunta { get; set; }
+    public int? EncuestaId { get; set; }
 
     public virtual ICollection<Opciones>? Opciones { get; set; }
 
@@ -15,8 +15,8 @@ public class Preguntas
 
     // Relaciones
     public virtual Encuesta? Encuesta { get; set; }
-    public virtual ICollection<Respuestas> Respuestas { get; set; }
-    public int UsuarioId { get; set; }
+    public virtual ICollection<Respuestas>? Respuestas { get; set; }
+    public int? UsuarioId { get; set; }
 }
 
 
