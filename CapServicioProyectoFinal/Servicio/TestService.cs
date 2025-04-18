@@ -12,18 +12,13 @@ namespace CapAplicacion.Servicio
             _testRepository = testRepository;
         }
 
-        public  Task AddTestAsync(Encuesta test)
+        public Task AddTestAsync(Encuesta test)
         {
-
-            try
-            {
-                return _testRepository.Add(test);
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            return _testRepository.Add(test);
+        }
+        public async Task<object> AddAndReturnIdAsync(Encuesta entity)
+        {
+            return await _testRepository.AddAndReturnId(entity);
         }
 
         public Task DeleteTestAsync(int id)

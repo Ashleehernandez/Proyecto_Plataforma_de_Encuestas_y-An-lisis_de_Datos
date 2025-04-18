@@ -8,12 +8,12 @@ namespace CapInfraestructura.Repository
     {
         private readonly ContextoDB _context;
         private DbSet<T> Entity { get; set; }
-        
+
         public GenericRepository(ContextoDB contexto)
         {
             _context = contexto;
             Entity = _context.Set<T>();
-            
+
         }
 
         public virtual async Task Add(T entity)
@@ -22,13 +22,28 @@ namespace CapInfraestructura.Repository
             {
                 await Entity.AddAsync(entity);
                 await _context.SaveChangesAsync();
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
-                Console.WriteLine(e.Message );
+                Console.WriteLine(e.Message);
             }
 
         }
 
+        public virtual async Task<object> AddAndReturnId(T entity)
+        {
+            try
+            {
+                var res = await Entity.AddAsync(entity);
+                await _context.SaveChangesAsync();
+                return res;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
         public virtual async Task Delete(int id)
         {
             var entity = await Entity.FindAsync(id);
@@ -42,14 +57,14 @@ namespace CapInfraestructura.Repository
             }
 
             await _context.SaveChangesAsync();
-           
-            
+
+
         }
 
         public virtual async Task<IEnumerable<T>> GetAll()
         {
             return await Entity.ToListAsync<T>();
-            
+
         }
 
         public virtual async Task<T> GetById(int id)
@@ -72,7 +87,7 @@ namespace CapInfraestructura.Repository
             entry.State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
-            
+
         }
     }
 }

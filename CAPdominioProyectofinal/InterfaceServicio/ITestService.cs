@@ -6,6 +6,7 @@ namespace CapDominio.InterfaceServicio
         Task<IEnumerable<Encuesta>> GetAllTestsAsync();
         Task<Encuesta> GetTestByIdAsync(int id);
         Task AddTestAsync(Encuesta test);
+        Task<object> AddAndReturnIdAsync(Encuesta entity);
         Task UpdateTestAsync(Encuesta test);
         Task DeleteTestAsync(int id);
     }

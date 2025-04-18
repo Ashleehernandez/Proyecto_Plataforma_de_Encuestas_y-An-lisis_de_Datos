@@ -43,22 +43,34 @@ namespace Api_ProyectFinalAshlee.Controllers
                 UsuarioId = dto.UsuarioId,
             };
 
+
+            await _testService.AddAndReturnIdAsync(encuesta);
+
+
             var Preguntas = dto.Preguntas.Select(p => new Preguntas
             {
                 Texto = p.Texto,
                 TipoPregunta = p.TipoPregunta,
                 EscalaMin = p.EscalaMin,
                 EscalaMax = p.EscalaMax,
-                //Opciones = p.TipoPregunta == TipoPregunta.OpcionMultiple ?
-                //                p.Opciones.Select(o => new Opciones { Texto = o }).ToList() : null
+                EncuestaId = encuesta.Id,
+                UsuarioId = dto.UsuarioId,
             }).ToList();
 
             foreach (var pregunta in Preguntas)
             {
                 await _preguntaServicio.AddTestAsync(pregunta);
-            }   
-           
-            await _testService.AddTestAsync(encuesta);
+                var opciones = new Opciones
+                {
+                    Texto = pregunta.Texto,
+                    PreguntaId = pregunta.Id,
+                    EncuestaId = encuesta.Id
+                };
+
+                //Crea la interface de crear opciones y listo
+            }
+
+
             return Ok("Encuesta creada correctamente");
         }
 
@@ -67,7 +79,7 @@ namespace Api_ProyectFinalAshlee.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] string value)
         {
-            var encuesta =await _testService.GetTestByIdAsync(id);
+            var encuesta = await _testService.GetTestByIdAsync(id);
             if (encuesta != null)
             {
                 _testService.UpdateTestAsync(encuesta);
