@@ -5,7 +5,7 @@ public class Preguntas
     public int Id { get; set; }
     public string Texto { get; set; }
     public TipoPregunta TipoPregunta { get; set; }
-    public int EncuestaId { get; set; };
+    public int EncuestaId { get; set; }
     //public int Opciones { get; set; };
     //public int Min { get; set; } = 1;
     //public int Max { get; set; } = 100;
