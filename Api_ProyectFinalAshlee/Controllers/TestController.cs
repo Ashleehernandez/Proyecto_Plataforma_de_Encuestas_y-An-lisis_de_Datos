@@ -64,7 +64,7 @@ namespace Api_ProyectFinalAshlee.Controllers
                 {
                     Texto = pregunta.Texto,
                     PreguntaId = pregunta.Id,
-                    EncuestaId = encuesta.Id
+                    //EncuestaId = encuesta.Id
                 };
 
                 //Crea la interface de crear opciones y listo
